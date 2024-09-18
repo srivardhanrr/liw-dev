@@ -16,14 +16,14 @@ class ContactMessageView(APIView):
         serializer = ContactMessageSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            email_subject = "Symposium Request"
+            email_subject = "Contact Form Request"
             email_message = f"""
                         <p><strong>Name:</strong> {serializer.data['name']}</p>
                         <p><strong>Email:</strong> {serializer.data['email']}</p>
                         <p><strong>Message:</strong> {serializer.data['message']}</p>
                         """
-            EmailThread(email_subject, email_message, ["electrochaser26@gmail.com"]).start()
 
+            EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com"]).run()
             return Response({"message": "Message sent successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -43,8 +43,7 @@ class SymposiumRequestView(APIView):
             <p><strong>Expected Attendees:</strong> {serializer.data['expected_attendees']}</p>
             <p><strong>Additional Info:</strong> {serializer.data['additional_info']}</p>
             """
-            EmailThread(email_subject, email_message, ["srivardhan.singh.rathore@gmail.com"]).start()
-
+            EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com"]).run()
             return Response({"message": "Symposium request submitted successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -54,34 +53,53 @@ class SpeakerApplicationView(APIView):
         serializer = SpeakerApplicationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            email_subject = "Speaker Application"
+            email_message = f"""
+            <p><strong>Name:</strong> {serializer.data['name']}</p>
+            <p><strong>Email:</strong> {serializer.data['email']}</p>
+            <p><strong>Phone:</strong> {serializer.data['phone']}</p>
+            <p><strong>LinkedIn:</strong> {serializer.data['linkedin']}</p>
+            <p><strong>Expertise:</strong> {serializer.data['expertise']}</p>
+            """
+            EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com", "srivardhanrr@gmail.com"]).run()
             return Response({"message": "Application submitted successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class EmailThread(threading.Thread):
-    def __init__(self, subject, html_content, recipient_list, html_message=None):
-        self.subject = subject
-        self.recipient_list = recipient_list
-        self.html_content = html_content
-        self.html_message = html_message
-        threading.Thread.__init__(self)
-
-    def run(self):
-        message = EmailMessage(self.subject, self.html_content, settings.EMAIL_HOST_USER,
-                               self.recipient_list)
-        message.content_subtype = "html"
-        message.send(fail_silently=False)
-        print(message.to)
-        print(message.from_email)
-
 
 class CourseRegistrationView(APIView):
     def post(self, request):
         serializer = CourseRegistrationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            email_subject = "Course Registration"
+            email_message = f"""
+            <p><strong>Name:</strong> {serializer.data['name']}</p>
+            <p><strong>Email:</strong> {serializer.data['email']}</p>
+            <p><strong>Selected Course:</strong> {serializer.data['selected_course']}</p>
+            <p><strong>Message:</strong> {serializer.data['message']}</p>
+            """
+            EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com", "info@leadershipinnovationworld.com"]).run()
             return Response({"message": "Course registration submitted successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EmailThread(threading.Thread):
+    def __init__(self, subject, html_content, recipient_list):
+        self.subject = subject
+        self.recipient_list = recipient_list
+        self.html_content = html_content
+        # threading.Thread.__init__(self)
+
+    def run(self):
+        resend.api_key = settings.RESEND_API_KEY
+        params: resend.Emails.SendParams = {
+            "from": "Leadership Innovation World <alerts@marksmanclub.in>",
+            "to": self.recipient_list,
+            "subject": self.subject,
+            "html": self.html_content,
+        }
+        email = resend.Emails.send(params)
+        print(email)
+
 
 
 class CourseFinderView(APIView):
