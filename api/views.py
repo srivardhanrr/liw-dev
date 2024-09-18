@@ -23,7 +23,7 @@ class ContactMessageView(APIView):
                         <p><strong>Message:</strong> {serializer.data['message']}</p>
                         """
 
-            EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com"]).run()
+            EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com", "info@leadershipinnovationworld.com"]).run()
             return Response({"message": "Message sent successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -43,7 +43,7 @@ class SymposiumRequestView(APIView):
             <p><strong>Expected Attendees:</strong> {serializer.data['expected_attendees']}</p>
             <p><strong>Additional Info:</strong> {serializer.data['additional_info']}</p>
             """
-            EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com"]).run()
+            EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com", "info@leadershipinnovationworld.com"]).run()
             return Response({"message": "Symposium request submitted successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -61,7 +61,7 @@ class SpeakerApplicationView(APIView):
             <p><strong>LinkedIn:</strong> {serializer.data['linkedin']}</p>
             <p><strong>Expertise:</strong> {serializer.data['expertise']}</p>
             """
-            EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com", "srivardhanrr@gmail.com"]).run()
+            EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com", "info@leadershipinnovationworld.com"]).run()
             return Response({"message": "Application submitted successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -79,6 +79,22 @@ class CourseRegistrationView(APIView):
             """
             EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com", "info@leadershipinnovationworld.com"]).run()
             return Response({"message": "Course registration submitted successfully"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CourseFinderView(APIView):
+    def post(self, request):
+        serializer = CourseFinderSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            email_subject = "Course Preferences"
+            email_message = f"""
+            <p><strong>Career Stage:</strong> {serializer.data['career_stage']}</p>
+            <p><strong>Interests:</strong> {serializer.data['interests']}</p>
+            <p><strong>Time Commitment:</strong> {serializer.data['time_commitment']}</p>
+            """
+            EmailThread(subject=email_subject, html_content=email_message, recipient_list=["electrochaser26@gmail.com", "info@leadershipinnovationworld.com"]).run()
+            return Response({"message": "Course preferences submitted successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -102,10 +118,3 @@ class EmailThread(threading.Thread):
 
 
 
-class CourseFinderView(APIView):
-    def post(self, request):
-        serializer = CourseFinderSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "Course preferences submitted successfully"}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
