@@ -22,7 +22,7 @@ class BaseViewSet(viewsets.ModelViewSet):
         email_subject = self.email_subject
         email_message = self.format_email_message(data)
         EmailThread(subject=email_subject, html_content=email_message,
-                    recipient_list=["electrochaser26@gmail.com"]).run()
+                    recipient_list=["electrochaser26@gmail.com", "info@leadershipinnovationworld.com"]).run()
 
     def format_email_message(self, data):
         raise NotImplementedError("Subclasses must implement format_email_message")
