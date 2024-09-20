@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import ContactMessage, SymposiumRequest, SpeakerApplication, CourseRegistration, CourseFinder
+from .models import ContactMessage, SymposiumRequest, SpeakerApplication, CourseRegistration, CourseFinder, Blog, \
+    CaseStudy
 
 
 class ContactMessageSerializer(serializers.ModelSerializer):
@@ -31,3 +32,15 @@ class CourseFinderSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseFinder
         fields = ['career_stage', 'interests', 'time_commitment']
+
+
+class BlogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blog
+        fields = ['id', 'title', 'image', 'description', 'content', 'created_at', 'updated_at', 'slug']
+
+
+class CaseStudySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CaseStudy
+        fields = ['id', 'title', 'description', 'content', 'created_at', 'updated_at', 'slug']

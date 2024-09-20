@@ -3,3 +3,6 @@ djangorestframework
 django-cors-headers
 resend
 whitenoise
+django_resized
+django-ckeditor-5
+
