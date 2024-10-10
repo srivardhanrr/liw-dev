@@ -3,13 +3,15 @@ from django import forms
 from django_ckeditor_5.widgets import CKEditor5Widget
 
 from api.models import ContactMessage, SymposiumRequest, SpeakerApplication, CourseRegistration, CourseFinder, Blog, \
-    CaseStudy
+    CaseStudy, Testimonial
 
 
 # Register your models here.
 class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'created_at')
 
+class TestimonialAdmin(admin.ModelAdmin):
+    list_display = ('name', 'position', 'created_at')
 
 class SymposiumRequestAdmin(admin.ModelAdmin):
     list_display = ('institution_name', 'contact_person', 'phone')
@@ -98,6 +100,7 @@ class CaseStudyAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ContactMessage, ContactMessageAdmin)
+admin.site.register(Testimonial, TestimonialAdmin)
 admin.site.register(SymposiumRequest, SymposiumRequestAdmin)
 admin.site.register(SpeakerApplication, SpeakerApplicationAdmin)
 admin.site.register(CourseRegistration, CourseRegistrationAdmin)

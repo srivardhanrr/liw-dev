@@ -4,9 +4,9 @@ from django.core.mail import EmailMessage
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from liwdev import settings
-from .models import Blog, CaseStudy
+from .models import Blog, CaseStudy, Testimonial
 from .serializers import ContactMessageSerializer, SymposiumRequestSerializer, SpeakerApplicationSerializer, \
-    CourseRegistrationSerializer, CourseFinderSerializer, BlogSerializer, CaseStudySerializer
+    CourseRegistrationSerializer, CourseFinderSerializer, BlogSerializer, CaseStudySerializer, TestimonialSerializer
 
 
 class BaseViewSet(viewsets.ModelViewSet):
@@ -104,6 +104,11 @@ class BlogViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Blog.objects.all().order_by('-created_at')
     serializer_class = BlogSerializer
     lookup_field = 'slug'
+
+
+class TestimonialViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Testimonial.objects.all().order_by('-created_at')
+    serializer_class = TestimonialSerializer
 
 
 class CaseStudyViewSet(viewsets.ReadOnlyModelViewSet):

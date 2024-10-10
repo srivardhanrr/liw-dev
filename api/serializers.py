@@ -1,12 +1,18 @@
 from rest_framework import serializers
 from .models import ContactMessage, SymposiumRequest, SpeakerApplication, CourseRegistration, CourseFinder, Blog, \
-    CaseStudy
+    CaseStudy, Testimonial
 
 
 class ContactMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactMessage
         fields = ['name', 'email', 'message']
+
+
+class TestimonialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Testimonial
+        fields = ['name', 'position', 'image', 'content', 'created_at']
 
 
 class SymposiumRequestSerializer(serializers.ModelSerializer):

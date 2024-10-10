@@ -14,6 +14,18 @@ class ContactMessage(models.Model):
         return f"{self.name} - {self.email}"
 
 
+class Testimonial(models.Model):
+    name = models.CharField(max_length=100)
+    position = models.CharField(max_length=100)
+    image = ResizedImageField(size=[200, 200], upload_to='testimonials/', blank=True,
+                              force_format='WEBP', quality=75)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
 class SymposiumRequest(models.Model):
     institution_name = models.CharField(max_length=255)
     contact_person = models.CharField(max_length=100)
