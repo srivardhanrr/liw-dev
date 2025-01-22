@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ContactMessageViewSet, SymposiumRequestViewSet, SpeakerApplicationViewSet, \
-    CourseRegistrationViewSet, CourseFinderViewSet, BlogViewSet, CaseStudyViewSet, TestimonialViewSet
+    CourseRegistrationViewSet, CourseFinderViewSet, BlogViewSet, CaseStudyViewSet, TestimonialViewSet, NewsViewSet
 
 router = DefaultRouter()
 router.register(r'contact', ContactMessageViewSet, basename='contact')
@@ -10,6 +10,7 @@ router.register(r'speaker-application', SpeakerApplicationViewSet, basename='spe
 router.register(r'course-registration', CourseRegistrationViewSet, basename='course-registration')
 router.register(r'course-finder', CourseFinderViewSet, basename='course-finder')
 router.register(r'blogs', BlogViewSet, basename='blog')
+router.register(r'news', NewsViewSet, basename='news')
 router.register(r'case-studies', CaseStudyViewSet, basename='case-study')
 router.register(r'testimonials', TestimonialViewSet, basename='testimonial')
 

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import ContactMessage, SymposiumRequest, SpeakerApplication, CourseRegistration, CourseFinder, Blog, \
-    CaseStudy, Testimonial
+    CaseStudy, Testimonial, News
 
 
 class ContactMessageSerializer(serializers.ModelSerializer):
@@ -50,3 +50,9 @@ class CaseStudySerializer(serializers.ModelSerializer):
     class Meta:
         model = CaseStudy
         fields = ['id', 'title', 'description', 'content', 'created_at', 'updated_at', 'slug']
+
+
+class NewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = News
+        fields = ['id', 'title', 'image', 'description', 'content', 'created_at', 'updated_at', 'slug']

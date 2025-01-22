@@ -132,3 +132,22 @@ class CaseStudy(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
+class News(models.Model):
+    title = models.CharField(max_length=200)
+    image = ResizedImageField(size=[1080, 1080], upload_to='blogs/', blank=True,
+                              force_format='WEBP', quality=75)
+    description = models.TextField(blank=True)
+    content = CKEditor5Field('Content', config_name='extends')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
